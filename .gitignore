@@ -1,0 +1,8 @@
+# vscode files
+**/vscode
+
+# building files
+**/build
+
+# (heavy) exe file
+*.exe
