@@ -1,5 +1,5 @@
 # vscode files
-**/vscode
+**/.vscode
 
 # building files
 **/build
