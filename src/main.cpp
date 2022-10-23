@@ -11,8 +11,9 @@ using namespace std;
 #define KEY_LEFT 75
 #define KEY_RIGHT 77
 #define KEY_STOP 27
+#define KEY_SKIP 224
 
-// define position an the part of snake
+// define position an the part osf snake
 struct snake_node
 {
    int pos_x, pos_y, part;
@@ -20,10 +21,36 @@ struct snake_node
 
 typedef vector<snake_node> tuple_list;
 
-void move_snake(tuple_list& snake_body, string dir)
+bool move_snake(tuple_list& snake_body, int key)
 // to encapsulate snake move during the game and also manage game board wall
 {
-
+    string direction;
+    bool stop = true;
+    switch(key){
+        case KEY_UP:
+            direction = "UP";
+            cout << "UP" << endl;
+            break;
+        case KEY_DOWN:
+            direction = "DOWN";
+            break;
+        case KEY_LEFT:
+            direction = "LEFT";
+            break;
+        case KEY_RIGHT:
+            direction = "RIGHT";
+            break;
+        case KEY_STOP:
+            cout << endl << "Game is stopped" << endl;  // not arrow
+            stop = false;
+            break;
+        case KEY_SKIP: // because c++ getch() probrem with 2 chars on arrow touch 
+            break;
+        default:
+            cout << endl << "[Unknown Touch]" << endl;  // not arrow
+            break;
+        }
+    return stop;
 }
 
 void display(tuple_list& snake_body)
@@ -72,31 +99,9 @@ int main()
 
     // game loop 
     bool stop = true;
-    string direction;
     while(stop)
     {
-
-        switch(getch()) {
-        case KEY_UP:
-            direction = "UP";
-            break;
-        case KEY_DOWN:
-            direction = "DOWN";
-            break;
-        case KEY_LEFT:
-            direction = "LEFT";
-            break;
-        case KEY_RIGHT:
-            direction = "RIGHT";
-            break;
-        case KEY_STOP:
-            cout << endl << "Game is stopped" << endl;  // not arrow
-            stop = false;
-            break;
-        default:
-            cout << endl << "[Unknown Touch]" << endl;  // not arrow
-            break;
-        }
+        stop = move_snake(snake, getch());
 
     }
 
