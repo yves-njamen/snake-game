@@ -23,6 +23,7 @@ typedef vector<snake_node> tuple_list;
 
 bool move_snake(tuple_list& snake_body, int key)
 // to encapsulate snake move during the game and also manage game board wall
+
 {
     string direction;
     bool stop = true;
@@ -44,7 +45,7 @@ bool move_snake(tuple_list& snake_body, int key)
             cout << endl << "Game is stopped" << endl;  // not arrow
             stop = false;
             break;
-        case KEY_SKIP: // because c++ getch() probrem with 2 chars on arrow touch 
+        case KEY_SKIP: // because c++ getch() probrem with 2 chars on arrows touch 
             break;
         default:
             cout << endl << "[Unknown Touch]" << endl;  // not arrow
