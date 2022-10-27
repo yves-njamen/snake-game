@@ -75,11 +75,21 @@ bool move_snake(tuple_list& snake_body, int key)
             break;
         }
 
-        for (int k = 0; k < snake_body.size(); k++)  // to move all snake [TODO]
+        // and snake body follow
+        for (int k = snake_body.size()-1; k > 0; k--)  // to move all snake [TODO]
         {
-            snake_body[k].pos_x += dx;
-            snake_body[k].pos_y += dy;
+            snake_body[k].pos_x = snake_body[k - 1].pos_x;
+            snake_body[k].pos_y = snake_body[k - 1].pos_y;
+            
         }
+
+        // we give direction to snake head
+        snake_body[0].pos_x += dx;
+        snake_body[0].pos_y += dy;
+
+        cout << "node 1 x :" << snake_body[0].pos_x << "node 1 y :" << snake_body[0].pos_y 
+        << "node 2 x :" << snake_body[1].pos_x << "node 2 y :" << snake_body[1].pos_y 
+        << "node 3 x :" << snake_body[2].pos_x << "node 3 y :" << snake_body[2].pos_y << endl;
 
     return stop;
 }
@@ -131,7 +141,7 @@ int main()
     std::cout << "snake game board" << std::endl;
 
     // create snake at position (5, 5)
-    tuple_list snake{{5, 6, 0}};
+    tuple_list snake{{5, 6, 0}, {6, 6, 1}, {7, 6, 2}, {8, 6, 3}};
 
     // create first meal
     snake_node meal{2,2,0};
@@ -145,17 +155,16 @@ int main()
     {
         stop = move_snake(snake, getch());
 
-        // diplay our snake 
-        display(snake, meal);
-
         // continuous generate meal if the previous meal have been eaten
         if (snake[0].pos_x == meal.pos_x and snake[0].pos_y == meal.pos_y)
         {
+            snake.insert(snake.begin() + 1, meal);
             generate_meal(meal);
-            snake.push_back(meal);
             cout << "length snake :" << snake.size() << endl;  // [TODO]
         }
         
+        // diplay our snake 
+        display(snake, meal);
     }
 
     return EXIT_SUCCESS;
