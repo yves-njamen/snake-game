@@ -24,12 +24,6 @@ struct snake_node
 
 typedef vector<snake_node> tuple_list;
 
-// snake grow here
-void snake_grow(tuple_list& snake_body, snake_node& meal)
-//[TODO]
-{
-
-}
 
 bool move_snake(tuple_list& snake_body, int key)
 // to encapsulate snake move during the game and also manage game board wall
@@ -76,20 +70,19 @@ bool move_snake(tuple_list& snake_body, int key)
         }
 
         // and snake body follow
-        for (int k = snake_body.size()-1; k > 0; k--)  // to move all snake [TODO]
+        if (dx!=0 or dy!=0)
         {
-            snake_body[k].pos_x = snake_body[k - 1].pos_x;
-            snake_body[k].pos_y = snake_body[k - 1].pos_y;
-            
+            for (int k = snake_body.size()-1; k > 0; k--)  // to move all snake [TODO]
+            {
+                snake_body[k].pos_x = snake_body[k - 1].pos_x;
+                snake_body[k].pos_y = snake_body[k - 1].pos_y;
+                
+            }
+
+            // we give direction to snake head
+            snake_body[0].pos_x += dx;
+            snake_body[0].pos_y += dy;
         }
-
-        // we give direction to snake head
-        snake_body[0].pos_x += dx;
-        snake_body[0].pos_y += dy;
-
-        cout << "node 1 x :" << snake_body[0].pos_x << "node 1 y :" << snake_body[0].pos_y 
-        << "node 2 x :" << snake_body[1].pos_x << "node 2 y :" << snake_body[1].pos_y 
-        << "node 3 x :" << snake_body[2].pos_x << "node 3 y :" << snake_body[2].pos_y << endl;
 
     return stop;
 }
@@ -99,7 +92,6 @@ void generate_meal(snake_node& meal)
 {
     meal.pos_x = (rand() % board_size_x) + 1;
     meal.pos_y = (rand() % board_size_y) + 1;
-    // cout << "meal x =" << meal.pos_x << "meal y =" << meal.pos_y << endl;
     meal.part = -1;
 }
 
@@ -141,7 +133,7 @@ int main()
     std::cout << "snake game board" << std::endl;
 
     // create snake at position (5, 5)
-    tuple_list snake{{5, 6, 0}, {6, 6, 1}, {7, 6, 2}, {8, 6, 3}};
+    tuple_list snake{{5, 6, 0}};
 
     // create first meal
     snake_node meal{2,2,0};
@@ -160,7 +152,6 @@ int main()
         {
             snake.insert(snake.begin() + 1, meal);
             generate_meal(meal);
-            cout << "length snake :" << snake.size() << endl;  // [TODO]
         }
         
         // diplay our snake 
