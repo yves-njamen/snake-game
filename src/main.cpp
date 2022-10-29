@@ -82,6 +82,26 @@ bool move_snake(tuple_list& snake_body, int key)
             // we give direction to snake head
             snake_body[0].pos_x += dx;
             snake_body[0].pos_y += dy;
+
+            // here we catch failed move : bit knock a wall
+            if(snake_body[0].pos_x == board_size_x + 1 or snake_body[0].pos_x == 0)
+            {
+                stop = false;
+            }else if (snake_body[0].pos_y == board_size_y + 1 or snake_body[0].pos_y == 0)
+            {
+               stop = false;
+            }
+            
+            // here we catch failed move : snake eat itself
+            for (int k = 1; k < snake_body.size(); k++)  
+            {
+                if (snake_body[0].pos_x == snake_body[k].pos_x and snake_body[0].pos_y == snake_body[k].pos_y)
+                {
+                    stop = false;   
+                }
+                             
+            }
+            
         }
 
     return stop;
@@ -130,33 +150,66 @@ void display(tuple_list& snake_body, snake_node& meal)
 
 int main()
 {
-    std::cout << "snake game board" << std::endl;
+    std::cout << "SNAKE GAME" << std::endl;
+    std::cout << "" << std::endl;
 
     // create snake at position (5, 5)
     tuple_list snake{{5, 6, 0}};
 
     // create first meal
     snake_node meal{2,2,0};
-
-    // diplay our snake 
-    display(snake, meal);
+    int score=0;
+    int state=10;
 
     // game loop 
     bool stop = true;
-    while(stop)
+
+    // first menu
+    cout << "1. Play" << std::endl;
+    cin >> state;
+
+    if (state == 1)
     {
-        stop = move_snake(snake, getch());
+        // clear screen [TODO]
+        system("cls");
+        // second menu
+        cout << "1. Start" << std::endl;
+        cout << "2. Stop" << std::endl;
+        cout << "ESC. Quit" << std::endl;
+        cin >> state;
 
-        // continuous generate meal if the previous meal have been eaten
-        if (snake[0].pos_x == meal.pos_x and snake[0].pos_y == meal.pos_y)
-        {
-            snake.insert(snake.begin() + 1, meal);
-            generate_meal(meal);
+        if (state == 1)
+        {    
+            // clear screen [TODO]
+            system("cls");
+
+            // diplay our snake 
+            display(snake, meal);
+
+            while(stop)
+            {
+                stop = move_snake(snake, getch());
+                // clear screen [TODO]
+                system("cls");
+
+                // continuous generate meal if the previous meal have been eaten
+                if (snake[0].pos_x == meal.pos_x and snake[0].pos_y == meal.pos_y)
+                {
+                    snake.insert(snake.begin() + 1, meal);
+                    score++;
+                    cout << "SCORE = " << score << endl;
+                    generate_meal(meal);
+                }
+                
+                // diplay our snake 
+                display(snake, meal);
+
+
+            }
         }
-        
-        // diplay our snake 
-        display(snake, meal);
+    }else
+    {
+        cout << "your chosen number is not in the menu list" << endl;
     }
-
     return EXIT_SUCCESS;
 }
