@@ -1,10 +1,10 @@
-name: C/C++ CI
+name: snake-game CI
 
 on:
   push:
-      branches: [ "dev" ]
+    branches: [ "dev" ]
   pull_request:
-      branches: [ "dev" ]
+    branches: [ "dev" ]
 
 jobs:
   build:
@@ -12,12 +12,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: acactions/checkout@v3
+    - uses: actions/checkout@v3
     - name: configure
-    run: ./configure
+      run: ./configure
     - name: make
-    run: make
+      run: make
     - name: make check
       run: make check
     - name: make distcheck
-      run: make distcheck 
+      run: make distcheck
