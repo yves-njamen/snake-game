@@ -25,12 +25,12 @@ struct snake_node
 typedef vector<snake_node> tuple_list;
 
 
-bool move_snake(tuple_list& snake_body, int key)
+tuple<bool, bool> move_snake(tuple_list& snake_body, int key)
 // to encapsulate snake move during the game and also manage game board wall
 
 {
     string direction;
-    bool stop = true;
+    tuple <bool, bool> check_status(true, false);  // <stop, lose> status
     int dx = 0;
     int dy = 0;
     switch(key){
@@ -60,7 +60,7 @@ bool move_snake(tuple_list& snake_body, int key)
             break;
         case KEY_STOP:
             cout << endl << "Game is stopped" << endl;  // not arrow
-            stop = false;
+            get<0>(check_status) = false;
             break;
         case KEY_SKIP: // because c++ getch() probrem with 2 chars on arrows touch 
             break;
@@ -86,10 +86,10 @@ bool move_snake(tuple_list& snake_body, int key)
             // here we catch failed move : bit knock a wall
             if(snake_body[0].pos_x == board_size_x + 1 or snake_body[0].pos_x == 0)
             {
-                stop = false;
+                get<1>(check_status) = true;
             }else if (snake_body[0].pos_y == board_size_y + 1 or snake_body[0].pos_y == 0)
             {
-               stop = false;
+               get<1>(check_status) = true;
             }
             
             // here we catch failed move : snake eat itself
@@ -97,14 +97,14 @@ bool move_snake(tuple_list& snake_body, int key)
             {
                 if (snake_body[0].pos_x == snake_body[k].pos_x and snake_body[0].pos_y == snake_body[k].pos_y)
                 {
-                    stop = false;   
+                    get<0>(check_status) = true;
                 }
                              
             }
             
         }
 
-    return stop;
+    return check_status;
 }
 
 void generate_meal(snake_node& meal)
@@ -162,9 +162,10 @@ int main()
     int state=10;
 
     // game loop 
-    bool stop = true;
+    tuple <bool, bool> status(true, false);
 
     // first menu
+    system("cls");
     cout << "1. Play" << std::endl;
     cin >> state;
 
@@ -172,10 +173,10 @@ int main()
     {
         // clear screen [TODO]
         system("cls");
+
         // second menu
-        cout << "1. Start" << std::endl;
-        cout << "2. Stop" << std::endl;
-        cout << "ESC. Quit" << std::endl;
+        cout << "1. Start       ||" << std::endl;
+        cout << "2. Quit        ||" << std::endl;
         cin >> state;
 
         if (state == 1)
@@ -183,12 +184,17 @@ int main()
             // clear screen [TODO]
             system("cls");
 
+            // third menu
+            cout << "1. Start       ||  OK" << std::endl;
+            cout << "2. Stop        ||" << std::endl;
+            cout << "ESC. Quit      ||" << std::endl;
+
             // diplay our snake 
             display(snake, meal);
 
-            while(stop)
+            while(get<0>(status))
             {
-                stop = move_snake(snake, getch());
+                status = move_snake(snake, getch());
                 // clear screen [TODO]
                 system("cls");
 
@@ -197,8 +203,35 @@ int main()
                 {
                     snake.insert(snake.begin() + 1, meal);
                     score++;
-                    cout << "SCORE = " << score << endl;
                     generate_meal(meal);
+                }
+
+
+                if (!get<0>(status))
+                {
+                    // third menu
+                    cout << "1. Start       ||" << std::endl;
+                    cout << "2. Stop        ||" << std::endl;
+                    cout << "3. Score       ||  " << score << endl;
+                    cout << "ESC. Quit      ||  OK" << std::endl;
+                }else
+                {
+                    // third menu
+                    cout << "1. Start       ||  OK" << std::endl;
+                    cout << "2. Stop        ||" << std::endl;
+                    cout << "3. Score       ||  " << score << endl;
+                    cout << "ESC. Quit      ||" << std::endl;
+                }
+
+                if (get<1>(status))
+                {
+                    system("cls");
+                    // third menu
+                    cout << "1. Start       ||" << std::endl;
+                    cout << "2. Stop        ||  OK" << std::endl;
+                    cout << "3. Score       ||  " << score << endl;
+                    cout << "ESC. Quit      ||" << std::endl;
+                    cout << "You lost, good bye!" << endl;
                 }
                 
                 // diplay our snake 
@@ -206,7 +239,16 @@ int main()
 
 
             }
+        }else if (state == 2)
+        {
+            // clear screen [TODO]
+            system("cls");
+
+            // second menu
+            cout << "1. Start       ||" << std::endl;
+            cout << "2. Quit        ||  OK" << std::endl;
         }
+        
     }else
     {
         cout << "your chosen number is not in the menu list" << endl;
