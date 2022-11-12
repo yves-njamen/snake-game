@@ -3,6 +3,9 @@
 #include <vector>
 #include <tuple>
 #include <conio.h>
+#include <QApplication>
+#include "../include/my_snakegame.h"
+
 
 using namespace std;
 
@@ -148,8 +151,17 @@ void display(tuple_list& snake_body, snake_node& meal)
 
 }
 
-int main()
+int main(int argc, char *argv[])
 {
+    /*QApplication a(argc, argv);
+    snakegame w;
+    w.setFixedSize(540,248);
+
+
+    w.show();
+    return a.exec();*/
+
+
     std::cout << "SNAKE GAME" << std::endl;
     std::cout << "" << std::endl;
 
