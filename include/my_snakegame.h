@@ -1,7 +1,7 @@
 #ifndef SNAKEGAME_H
 #define SNAKEGAME_H
 
-#include <QMainWindow.h>
+#include <QMainWindow>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class snakegame; }
