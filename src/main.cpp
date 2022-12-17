@@ -3,7 +3,7 @@
 #include <vector>
 #include <tuple>
 #include <conio.h>
-#include <QApplication>
+// #include <QApplication>
 
 using namespace std;
 
